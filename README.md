@@ -282,7 +282,15 @@ Once you have this then in the constructor of your report class simply add the f
   ...
 ```
 
-This will now provide a filter on the alias 'l' with the field 'added'.
+This will now provide a filter on the alias.field 'l.added'.
+
+!! Important Note, there is an issue with Doctrine [*DDC-3108*](https://github.com/doctrine/doctrine2/pull/1212) that has a pull-request open. This means that you will not be able to use aliases from anything but the base table (ie Joins) until it has been resolved. You can use a fork of Doctrine with the bug fix by modifying your composer.json 
+
+WARNING, this is a custom fork of dev-master until the pull request is accepted, it will not receive security or bug fixes.
+
+```yaml
+        "doctrine/orm": "dev-master#da8de433b656e681354817bc6b3294a20eabf4ac as dev-master",
+```
 
 ## Groups
 
