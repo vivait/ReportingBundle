@@ -1,0 +1,31 @@
+{
+  "name":"vivait/reporting-bundle",
+  "license": "GPLv2",
+  "description":"Reporting framework that has to be extended to suit the application",
+  "authors":[
+    {
+      "name":"Kiel Goodman",
+      "email":"kiel@vivait.co.uk"
+    }
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.3.3",
+    "doctrine/common": "~2.2",
+    "doctrine/orm": "~2.2",
+    "symfony/security": "~2.1",
+    "symfony/options-resolver": "~2.1"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "~2.0"
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "autoload":{
+    "psr-0":{
+      "Vivait\\ReportingBundle\\": "src/"
+    }
+  }
+}
