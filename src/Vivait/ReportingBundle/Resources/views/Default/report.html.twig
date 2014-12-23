@@ -1,0 +1,168 @@
+{% extends '::base.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% javascripts
+    "bundles/andreyboloninchartjs/Chart.min.js" %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock head_script %}
+{% block sectiontitle %}
+    {{ name|default(report.title) }}
+{% endblock %}
+
+{% block sectionlinks %}
+
+    {% if not parent %}
+        {% if name %}
+            <a href="{{ path('vivait_reporting_favorite',{'report':id,'remove':1 }) }}" class="btn btn-warning"><i class="glyphicon glyphicon-star"></i> Remove Favorite</a>
+        {% else %}
+            <a href="{{ path('vivait_reporting_favorite',{'report':id }) }}" class="ajax-dialog btn btn-primary"><i class="glyphicon glyphicon-star-empty"></i> Favorite Report</a>
+        {% endif %}
+    {% endif %}
+
+
+    {% if parent %}
+        <a href="{{ path('vivait_reporting_delete',{'report':id }) }}" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Delete</a>
+        <a href="{{ path('vivait_reporting_rename',{'report':id }) }}" class="ajax-dialog btn btn-info"><i class="glyphicon glyphicon-pencil"></i> Rename Report</a>
+        <a href="{{ path('vivait_reporting_build',{'report':parent.id }) }}" class="btn btn-info"><i class="glyphicon glyphicon-arrow-up"></i> Back to Parent Report</a>
+    {% endif %}
+{% endblock %}
+{% block section %}
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Filters</h3>
+                </div>
+                <ul class="list-group">
+                    {% for key,filter in report.filters %}
+                        <li class="list-group-item">
+                            {% if filter.linked == 1 and parent.id is defined %}
+                                {{ filter.name }}: {{ filter.options }}
+                                <a class="pull-right label label-danger" href="{{ path('vivait_reporting_filter_link',{'report':id,'filter':key,'unlink':1}) }}"><i class="glyphicon glyphicon-remove"></i> Unlink</a>
+                            {% elseif filter.linked == 0 and parent.id is defined %}
+                                <a class="ajax-dialog" href="{{ path('vivait_reporting_filter',{'report':id,'filter':key}) }}">{{ filter.name }}: {{ filter.options }}</a>
+                                <a class="pull-right label label-warning" href="{{ path('vivait_reporting_filter_link',{'report':id,'filter':key}) }}"><i class="glyphicon glyphicon-link"></i> Link to Parent</a>
+                            {% else %}
+                                <a class="ajax-dialog" href="{{ path('vivait_reporting_filter',{'report':id,'filter':key}) }}">{{ filter.name }}: {{ filter.options }}</a>
+                            {% endif %}
+                        </li>
+                    {% else %}
+                        <li class="list-group-item">Not Available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Groupings</h3>
+                </div>
+                <ul class="list-group">
+                    {% for key,group in report.groups %}
+                        <a class="ajax-dialog list-group-item" href="{{ path('vivait_reporting_group',{'report':id,'group':key}) }}">{{ group.name }}: <span class="pull-right">{{ group.options }}</span></a>
+                    {% else %}
+                        <li class="list-group-item">Not Available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-sm-3 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Order By</h3>
+                </div>
+                <ul class="list-group">
+                    {% for key,order in report.orders %}
+                        <a class="ajax-dialog list-group-item" href="{{ path('vivait_reporting_order',{'report':id,'order':key}) }}">{{ order.name }}: <span class="pull-right">{{ order.options }}</span></a>
+                    {% else %}
+                        <li class="list-group-item">Not Available</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {% if parent.id is not defined %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Compare With</h3>
+                    </div>
+                    <div class="list-group">
+                        {% for comparison in comparisons %}
+                            <a class="list-group-item" href="{{ path('vivait_reporting_build',{'report':comparison.id }) }}">
+                                {{ comparison.name|default('Comparison Report') }}
+
+                                {% if comparison_status %}
+                                    <span class="label label-success pull-right">OK</span>
+                                {% else %}
+                                    <span class="label label-danger pull-right">Error</span>
+
+                                {% endif %}
+                            </a>
+                        {% else %}
+                            <a class="list-group-item" href="{{ path('vivait_reporting_create_comparison',{'report':id }) }}">New Comparison Report</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+
+        </div>
+    </div>
+
+    <style>
+        canvas {
+            width: 100% !important;
+            min-height: 500px;
+            height: auto !important;
+        }
+    </style>
+
+    {% if data %}
+        <div class="row">
+            <div class="col-md-12">
+                {% for key,chart in report.charts %}
+                    {% include chart.template with {'alias':key, 'mapping': columnmapping,'graph_data': chart.graphdata(data,columnmapping), 'options': chart.options(columnmapping)} only %}
+                {% endfor %}
+                <table class="table">
+                    <thead>
+                    <tr>
+                        {% for key,heading in columnmapping %}
+                            <th>{{ heading.label }}</th>
+                        {% endfor %}
+                    </tr>
+                    </thead>
+                    {% for row in data %}
+                        <tr>
+                            {% for key,heading in columnmapping %}
+                                <td>
+                                    {% if heading.grouped is defined and loop.index > 1 %}
+                                        <span style="color: {{ '#' ~ row[key]|sha1[:6] }}">{{ row[key] }}</span>
+                                    {% elseif heading.data is defined and heading.data %}
+                                        {% if comparisons|length and comparison_status %}
+                                            {{ row[key] }}%
+                                        {% else %}
+                                            {{ row[key] }}
+                                        {% endif %}
+                                    {% else %}
+                                        {{ row[key] }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info" role="alert">There is no data to display</div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

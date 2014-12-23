@@ -1,0 +1,32 @@
+{% if graph_data['datasets'] is defined %}
+    <div class="graph-container">
+        <div class="widget">
+            <canvas id="{{ alias }}"></canvas>
+        </div>
+        <script>
+            var {{ alias }} =
+            document.getElementById('{{ alias }}').getContext('2d');
+            var {{ alias }}_data = {
+                labels: {{ graph_data['x']|json_encode()|raw('js') }},
+                datasets: [
+                    {% for dataset in graph_data['datasets'] %}
+                    {
+                        label: "{{ dataset['label'] }}",
+                        fillColor: "rgba({{ dataset['color_rgb']|default('220,220,220') }},0.60)",
+                        strokeColor: "#{{ dataset['color_hex']|default('000') }}",
+                        pointColor: "#fff",
+                        pointStrokeColor: "#{{ dataset['color_hex']|default('000') }}",
+                        data: {{ dataset['data']|json_encode()|raw('js') }}
+                    },
+                    {% endfor %}
+                ]
+            };
+
+            {{ alias }}.canvas.width = 1000;
+            {{ alias }}.canvas.height = 500;
+
+            new Chart({{ alias }}).Bar({{ alias }}_data);
+
+        </script>
+    </div>
+{% endif %}

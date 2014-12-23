@@ -1,0 +1,54 @@
+{% extends '::base.html.twig' %}
+{% block sectiontitle %}Available Reports{% endblock %}
+{#{% block sectionlinks %}<a href="{{ path('viva_bravo_area_edit') }}" class="ajax-dialog btn"><i class="glyphicon glyphicon-plus-sign"></i> Add Area</a>{% endblock %}#}
+
+{% block section %}
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Favorite Reports</h2>
+
+            <div class="list-group">
+                {% for report in favourites %}
+                    <a href="{{ path('vivait_reporting_build',{'report':report.id}) }}" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ report.name }}</h4>
+
+                        <p class="list-group-item-text">Last Updated: {{ report.updatedAt|date('d/m/Y') }}</p>
+                    </a>
+                {% else %}
+                    <div class="list-group-item">
+                        There are no favorite reports
+                    </div>
+                {% endfor %}
+            </div>
+            <ul>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Create Report</h2>
+
+            <div class="list-group">
+                {% for key,report in reports %}
+                    <a href="{{ path('vivait_reporting_create',{'report':key}) }}" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ report.title }}</h4>
+
+                        <p class="list-group-item-text">{{ report.description }}</p>
+
+                        <p class="list-group-item-text"><strong>Can be Filtered by:</strong> {{ report.filters|join(', ') }}</p>
+
+                        <p class="list-group-item-text"><strong>Can be Grouped by:</strong> {{ report.groups|join(', ') }}</p>
+
+                        <p class="list-group-item-text"><strong>Can be Ordered by:</strong> {{ report.orders|join(', ') }}</p>
+                    </a>
+                {% else %}
+                    <a href="#" class="list-group-item">
+                        There are no reports available</a>
+                {% endfor %}
+            </div>
+            <ul>
+            </ul>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% if graph_data['datasets'] is defined %}
+    {% for dataset in graph_data['datasets'] %}
+        <div class="span3">
+            <canvas id="{{ alias ~ dataset['id'] }}"></canvas>
+        </div>
+        <script>
+            var {{ alias ~ dataset['id'] }} =
+            document.getElementById('{{ alias ~ dataset['id'] }}').getContext('2d');
+            var {{ alias ~ dataset['id']  }}_data = {{ dataset['data']|json_encode()|raw('js') }};
+            new Chart({{ alias ~ dataset['id'] }}).Doughnut({{ alias ~ dataset['id'] }}_data);
+        </script>
+    {% endfor %}
+{% endif %}

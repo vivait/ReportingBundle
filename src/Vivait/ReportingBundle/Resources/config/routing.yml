@@ -1,0 +1,43 @@
+vivait_reporting:
+    path:     /reporting
+    defaults: { _controller: VivaitReportingBundle:Reporting:index }
+
+vivait_reporting_create:
+    path:     /reporting/create/{report}
+    defaults: { _controller: VivaitReportingBundle:Reporting:create}
+
+vivait_reporting_create_comparison:
+    path:     /reporting/{report}/comparison
+    defaults: { _controller: VivaitReportingBundle:Reporting:createcomparison}
+
+vivait_reporting_filter_link:
+    path:     /reporting/{report}/filterlink/{filter}/{unlink}
+    defaults: { _controller: VivaitReportingBundle:Reporting:linkComparisonFilter, unlink: 0 }
+
+vivait_reporting_rename:
+    path:     /reporting/{report}/rename
+    defaults: { _controller: VivaitReportingBundle:Reporting:nameReport }
+
+vivait_reporting_delete:
+    path:     /reporting/{report}/delete
+    defaults: { _controller: VivaitReportingBundle:Reporting:deleteReport }
+
+vivait_reporting_build:
+    path:     /reporting/{report}
+    defaults: { _controller: VivaitReportingBundle:Reporting:build }
+
+vivait_reporting_filter:
+    path:     /reporting/{report}/filter/{filter}
+    defaults: { _controller: VivaitReportingBundle:Reporting:filter }
+
+vivait_reporting_group:
+    path:     /reporting/{report}/group/{group}
+    defaults: { _controller: VivaitReportingBundle:Reporting:group }
+
+vivait_reporting_order:
+    path:     /reporting/{report}/order/{order}
+    defaults: { _controller: VivaitReportingBundle:Reporting:order }
+
+vivait_reporting_favorite:
+    path:     /reporting/{report}/favorite/{remove}
+    defaults: { _controller: VivaitReportingBundle:Reporting:favorite, remove: 0 }

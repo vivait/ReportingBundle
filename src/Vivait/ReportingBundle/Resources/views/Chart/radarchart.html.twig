@@ -1,0 +1,30 @@
+{% if graph_data['datasets'] is defined %}
+
+    <div class="span3">
+        <canvas id="{{ alias }}"></canvas>
+    </div>
+
+    <script>
+        var {{ alias }} =
+        document.getElementById('{{ alias }}').getContext('2d');
+        var {{ alias }}_data = {
+            labels: {{ graph_data['x']|json_encode()|raw('js') }},
+            datasets: [
+                {% for dataset in graph_data['datasets'] %}
+                {
+                    fillColor: "rgba({{ dataset['color_rgb']|default('220,220,220') }},0.60)",
+                    strokeColor: "#{{ dataset['color_hex']|default('000') }}",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#{{ dataset['color_hex']|default('000') }}",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: {{ dataset['data']|json_encode()|raw('js') }}
+                },
+                {% endfor %}
+            ]
+        };
+        {{ alias }}.canvas.width = 1000;
+        {{ alias }}.canvas.height = 500;
+        new Chart({{ alias }}).Radar({{ alias }}_data);
+    </script>
+{% endif %}

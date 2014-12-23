@@ -1,0 +1,8 @@
+services:
+    vivait_reporting:
+        class: Vivait\ReportingBundle\Services\ReportingService
+
+    vivait_twig_reporting_extension:
+        class: Vivait\ReportingBundle\Twig\VivaitTwigReportingExtension
+        tags:
+            - { name: twig.extension }
