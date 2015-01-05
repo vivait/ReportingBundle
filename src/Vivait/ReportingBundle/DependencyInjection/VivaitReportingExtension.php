@@ -28,21 +28,19 @@ class VivaitReportingExtension extends Extension implements PrependExtensionInte
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
-        $resolveEntitiesConfig = [
+        //Set user target entities
+        $this->prependConfig('doctrine', $container, [
             'orm' => [
                 'resolve_target_entities' => [
                     $container->getParameter('vivait_reporting.reporting_user_interface.class') => $config['user_class']
                 ]
             ]
-        ];
+        ]);
 
-        foreach ($container->getExtensions() as $name => $extension) {
-            switch ($name) {
-                case 'doctrine':
-                    $container->prependExtensionConfig($name, $resolveEntitiesConfig);
-                    break;
-            }
-        }
+        //Set Assetic bundles
+        $this->prependConfig('assetic', $container, [
+            'bundles' => ['VivaitReportingBundle']
+        ]);
     }
 
     /**
@@ -52,8 +50,22 @@ class VivaitReportingExtension extends Extension implements PrependExtensionInte
     {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+    }
 
-
+    /**
+     * @param $configNode
+     * @param ContainerBuilder $container
+     * @param $config
+     */
+    private function prependConfig($configNode, ContainerBuilder $container, $config)
+    {
+        foreach ($container->getExtensions() as $name => $extension) {
+            switch ($name) {
+                case $configNode:
+                    $container->prependExtensionConfig($name, $config);
+                    break;
+            }
+        }
     }
 
 }
