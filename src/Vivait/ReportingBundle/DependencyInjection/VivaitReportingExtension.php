@@ -25,11 +25,13 @@ class VivaitReportingExtension extends Extension implements PrependExtensionInte
         $configs = $container->getExtensionConfig($this->getAlias());
         $config = $this->processConfiguration(new Configuration(), $configs);
 
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yml');
 
         $resolveEntitiesConfig = [
             'orm' => [
                 'resolve_target_entities' => [
-                    'Vivait\ReportingBundle\Model\ReportingUserInterface' => $config['user_class']
+                    $container->getParameter('vivait_reporting.reporting_user_interface.class') => $config['user_class']
                 ]
             ]
         ];
@@ -51,8 +53,7 @@ class VivaitReportingExtension extends Extension implements PrependExtensionInte
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
+
     }
 
 }
