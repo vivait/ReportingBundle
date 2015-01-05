@@ -409,6 +409,6 @@ class ReportingController extends Controller
         $em->remove($report);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('vivait_reporting_build',['id'=>$parent_id]));
+        return $this->redirect($this->generateUrl('vivait_reporting_build', ['report' => $parent_id]));
     }
 }
