@@ -239,7 +239,7 @@ class Report
 
     /**
      * Convoluted way of updating the internal property so doctrine can detect the change
-     * @param $filters
+     * @param ReportFilter[] $filters
      */
     public function setFilters($filters)
     {
@@ -253,7 +253,7 @@ class Report
 
     /**
      * Convoluted way of updating the internal property so doctrine can detect the change
-     * @param $groups
+     * @param ReportGroup[] $groups
      */
     public function setGroups($groups)
     {
@@ -341,7 +341,7 @@ class Report
     /**
      * Get sharedUsers
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return ReportingUserInterface[]
      */
     public function getSharedUsers()
     {
@@ -375,7 +375,7 @@ class Report
     /**
      * Get comparisons
      *
-     * @return \Doctrine\Common\Collections\Collection|Report[]
+     * @return Report
      */
     public function getComparisons()
     {

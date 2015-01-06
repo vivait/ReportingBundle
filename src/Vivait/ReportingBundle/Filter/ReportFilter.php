@@ -100,7 +100,7 @@ abstract class ReportFilter implements Serializable, ReportOptionInterface
     }
 
     /**
-     * @param mixed $linked
+     * @param boolean $linked
      */
     public function setLinked($linked)
     {

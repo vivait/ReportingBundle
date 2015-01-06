@@ -53,7 +53,7 @@ class VivaitReportingExtension extends Extension implements PrependExtensionInte
     }
 
     /**
-     * @param $configNode
+     * @param string $configNode
      * @param ContainerBuilder $container
      * @param $config
      */

@@ -3,7 +3,6 @@
 namespace Vivait\ReportingBundle\Services;
 
 
-use Vivait\ReportingBundle\Entity\Report;
 use Vivait\ReportingBundle\Report\ReportBuilder;
 
 class ReportingService

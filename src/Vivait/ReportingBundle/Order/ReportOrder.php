@@ -29,7 +29,7 @@ abstract class ReportOrder implements Serializable, ReportOptionInterface
 
     /**
      * Return a DQL string of the ordering required
-     * @return string|null
+     * @return string
      */
     public function getOrderDirection()
     {
