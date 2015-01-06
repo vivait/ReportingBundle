@@ -311,13 +311,14 @@ class ReportingController extends Controller
 
             return $this->redirectBack($request);
         }
+        $user_class = $em->getClassMetadata('Vivait\ReportingBundle\Entity\Report')->getAssociationTargetClass('shared_users');
 
-        $users = $this->getDoctrine()->getRepository('VivaAuthBundle:User')->findAllinTenant($this->getUser()->getCurrentTenant());
+        $users = $this->getDoctrine()->getRepository($user_class)->findAll();
         $report->addSharedUser($this->getUser());
 
         $form = $this->createFormBuilder($report)
             ->add('name', 'text')
-            ->add('shared_users', 'entity', ['class' => 'Vivait\ReportingBundle\Model\ReportingUserInterface', 'attr' => ['size' => 30], 'label' => 'Share With', 'multiple' => true, 'choices' => $users])
+            ->add('shared_users', 'entity', ['class' => $user_class, 'attr' => ['size' => 30], 'label' => 'Share With', 'multiple' => true, 'choices' => $users])
             ->getForm();
 
         $form->handleRequest($request);
