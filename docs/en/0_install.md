@@ -26,9 +26,9 @@ vivait_reporting:
 ...
 ```
 
-Create a link to the Reporting Centre:
+Create a link to the Reporting Framework:
 ```twig
-<a href="{{ path('vivait_reporting') }}">Reporting Centre</a>
+<a href="{{ path('vivait_reporting') }}">Reporting</a>
 ```
 
 Ensure your user entity implements `Vivait\ReportingBundle\Model\ReportingUserInterface`:
@@ -45,4 +45,23 @@ And let this bundle know what your User entity is:
 ```yaml
 vivait_reporting:
     user_class: Vivait\MyAppBundle\Entity\User
+```
+
+This bundle requires an update to your database schema so perform that in the correct way for your application:
+
+```shell
+php app/console doctrine:schema:update
+```
+
+or better using migrations:
+
+```shell
+php app/console doctrine:migrations:diff
+php app/console doctrine:migrations:migrate
+```
+
+Finally as we are installing new front-end files perform an assetic:dump
+
+```shell
+php app/console assetic:dump
 ```
