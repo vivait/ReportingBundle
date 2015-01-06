@@ -18,7 +18,7 @@ class BarChart extends Chart
     {
         $x_axis = '';
         if (count($this->getDimensions($columnmapping))) {
-            $x_axis = array_shift($this->getDimensions($columnmapping));
+            $x_axis = current($this->getDimensions($columnmapping));
         }
 
         return ['x_axis' => $x_axis];
