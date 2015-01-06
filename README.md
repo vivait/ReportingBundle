@@ -1,5 +1,6 @@
 ReportingBundle
 ===============
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/vivait/ReportingBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/vivait/ReportingBundle/?branch=master)
 
 Reporting framework that has to be extended to suit the application
 
