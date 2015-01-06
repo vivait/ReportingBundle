@@ -4,7 +4,7 @@ namespace Vivait\ReportingBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Vivait\ReportingBundle\Report\Group\GenericGroup;
+use Vivait\ReportingBundle\Group\GenericGroup;
 
 class GenericGroupType extends ReportFilterType
 {
