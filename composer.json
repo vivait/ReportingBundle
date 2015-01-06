@@ -21,9 +21,6 @@
   "require-dev": {
     "phpspec/phpspec": "~2.0"
   },
-  "suggest": {
-    "andreybolonin/chartjs-bundle": "To use charts, please install this bundle"
-  },
   "config": {
     "bin-dir": "bin"
   },
