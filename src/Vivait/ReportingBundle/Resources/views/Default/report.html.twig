@@ -63,7 +63,7 @@
                 </div>
                 <ul class="list-group">
                     {% for key,group in report.groups %}
-                        <a class="ajax-dialog list-group-item" href="{{ path('vivait_reporting_group',{'report':id,'group':key}) }}">{{ group.name }}: <span class="pull-right">{{ group.options }}</span></a>
+                        <a class="ajax-dialog list-group-item" href="{{ path('vivait_reporting_group',{'report':id,'group':key}) }}">{{ group.label }}: <span class="pull-right">{{ group.options }}</span></a>
                     {% else %}
                         <li class="list-group-item">Not Available</li>
                     {% endfor %}
@@ -78,7 +78,7 @@
                 </div>
                 <ul class="list-group">
                     {% for key,order in report.orders %}
-                        <a class="ajax-dialog list-group-item" href="{{ path('vivait_reporting_order',{'report':id,'order':key}) }}">{{ order.name }}: <span class="pull-right">{{ order.options }}</span></a>
+                        <a class="ajax-dialog list-group-item" href="{{ path('vivait_reporting_order',{'report':id,'order':key}) }}">{{ order.label }}: <span class="pull-right">{{ order.options }}</span></a>
                     {% else %}
                         <li class="list-group-item">Not Available</li>
                     {% endfor %}

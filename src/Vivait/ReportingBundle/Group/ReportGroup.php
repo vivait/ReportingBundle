@@ -36,6 +36,19 @@ abstract class ReportGroup implements Serializable, ReportOptionInterface
     }
 
     /**
+     * Returns the DQL group by field
+     * @return mixed|string
+     */
+    public function getGroupBy()
+    {
+        if ($this->group) {
+            return $this->getAlias();
+        }
+
+        return '';
+    }
+
+    /**
      * Return a DQL string of the ordering required
      * @return string
      */
@@ -43,12 +56,6 @@ abstract class ReportGroup implements Serializable, ReportOptionInterface
     {
         return $this->order == self::ORDER_BY_ASC ? 'ASC' : 'DESC';
     }
-
-    /**
-     * Return a DQL string of the grouping required
-     * @return string|null
-     */
-    abstract public function getGroupBy();
 
     /**
      * Returns a DQL string of the additional selects that are needed to run the reports with the group by
@@ -176,8 +183,26 @@ abstract class ReportGroup implements Serializable, ReportOptionInterface
      */
     function __toString()
     {
-        return $this->getName();
+        return $this->getLabel();
     }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string
+     * @deprecated
+     */
+    public function getName()
+    {
+        return $this->label;
+    }
+
 
 
 }

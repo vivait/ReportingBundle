@@ -24,15 +24,6 @@ class GenericGroup extends ReportGroup implements ReportGroupOrderableInterface
         $this->group = self::GROUP_BY_OFF;
     }
 
-    public function getGroupBy()
-    {
-        if ($this->group) {
-            return $this->getAlias();
-        }
-
-        return '';
-    }
-
     public static function getAllChoices()
     {
         return [
@@ -51,12 +42,6 @@ class GenericGroup extends ReportGroup implements ReportGroupOrderableInterface
         throw new \Exception('Unknown group type');
     }
 
-    public function getName()
-    {
-        return 'GenericGroup';
-    }
-
-
     /**
      * @return AbstractType
      */
@@ -64,7 +49,6 @@ class GenericGroup extends ReportGroup implements ReportGroupOrderableInterface
     {
         return new GenericGroupType();
     }
-
 
     /**
      * Returns the column mappings used by the group by
