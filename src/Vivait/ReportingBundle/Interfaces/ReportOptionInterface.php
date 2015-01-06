@@ -9,21 +9,21 @@ interface ReportOptionInterface
     /**
      * @return FormTypeInterface
      */
-    function getFormType();
+    public function getFormType();
 
     /**
      * @return string
      */
-    function getName();
+    public function getName();
 
     /**
      * @return string
      */
-    function getOptions();
+    public function getOptions();
 
     /**
      * @return string
      */
-    function __toString();
+    public function __toString();
 
 }

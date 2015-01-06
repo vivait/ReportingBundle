@@ -252,9 +252,9 @@ Then create the form type that will be used by the above class for letting the u
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Vivait\ReportingBundle\Form\Type\ReportFilterTypeInterface;
+use Vivait\ReportingBundle\Form\Type\ReportFilterType;
 
-class DateRangeFilterType extends ReportFilterTypeInterface
+class DateRangeFilterType extends ReportFilterType
 {
 
     public function buildForm(FormBuilderInterface $form, array $options)
@@ -317,158 +317,23 @@ Like before there is the actual class that fleshes out the details and another t
 
 By default the parent class will persist the group and order properties in the class, if you need to persist additional information then you will need to override $serialize_fields in the class.
 
- ### A simple grouping
+### A simple grouping
  
- Most groupings are a simple off/on with an ordering, in most cases you can use the code below to create a group with minor modifications to the labelling, as the grouping field is passed in via the constructor it might also be possible to have a generic grouping class with the final field just passed in.
+Most groupings are a simple off/on with an ordering, in most cases you can use the pre-supplied class below to create a group and pass the grouping field and label in via the constructor
  
- ```php
- namespace Viva\BravoBundle\Report\Group;
+```php
 
-use Symfony\Component\Form\AbstractType;
-use Vivait\MyAppBundle\Report\Form\Type\DealerGroupType;
-use Vivait\ReportingBundle\Group\ReportGroup;
-use Vivait\ReportingBundle\Interfaces\ReportGroupOrderableInterface;
+  use Vivait\ReportingBundle\Report\Group\GenericGroup;
 
-class GenericGroup extends ReportGroup implements ReportGroupOrderableInterface
-{
+  function __construct(...)
+  ...
+    $this->addChart('group_called', new GenericGroup($this,'u.called'));
+  ...
 
-    CONST GROUP_BY_OFF = 0;
-    CONST GROUP_BY_ON = 1;
-
-    /**
-     * @param $field string     This is the DQL field to group by
-     * @param $label string     This is the label to show in output
-     */
-    function __construct($field, $label)
-    {
-        $this->label = $label;
-        $this->field = $field;
-        $this->group = self::GROUP_BY_OFF;
-    }
-
-    public function getGroupBy()
-    {
-        if ($this->group) {
-            return $this->getAlias();
-        }
-
-        return '';
-    }
-
-    public static function getAllChoices()
-    {
-        return [
-            self::GROUP_BY_OFF => 'Off',
-            self::GROUP_BY_ON => 'On',
-        ];
-    }
-
-    public function getSelect()
-    {
-        if ($this->group == self::GROUP_BY_OFF) {
-            return null;
-        } elseif ($this->group == self::GROUP_BY_ON) {
-            return sprintf("%s as %s", $this->field, $this->getAlias());
-        }
-        throw new \Exception('Unknown group type');
-    }
-
-    public function getName()
-    {
-        return 'GenericGroup';
-    }
-
-
-    /**
-     * @return AbstractType
-     */
-    public function getFormType()
-    {
-        return new GenericGroupType();
-    }
-
-
-    /**
-     * Returns the column mappings used by the group by
-     * @return array
-     */
-    public function getColumnMapping()
-    {
-        if ($this->group) {
-            return [
-                $this->getAlias() => [
-                    'label'   => $this->label,
-                    'grouped' => true
-                ],
-            ];
-        }
-
-        return [];
-    }
-
-    /**
-     * @return array|null
-     */
-    public static function getAllOrderChoices()
-    {
-        return [
-            self::ORDER_BY_NONE   => 'None',
-            self::ORDER_BY_ASC   => 'A - Z',
-            self::ORDER_BY_DESC   => 'Z - A',
-        ];
-    }
-}
- ```
- 
- The form type would look something like this 
- 
- ```php
- 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Vivait\MyAppBundle\Report\Group\DealerGroup;
-use Vivait\ReportingBundle\Form\Type\ReportFilterTypeInterface;
-
-class GenericGroupType extends ReportFilterTypeInterface
-{
-
-    public function buildForm(FormBuilderInterface $form, array $options)
-    {
-        $form->add(
-            'group',
-            'choice',
-            array(
-                'label'    => 'Grouping',
-                'required' => true,
-                'choices' => GenericGroup::getAllChoices(),
-            )
-        );
-        $form->add(
-            'order',
-            'choice',
-            array(
-                'label'    => 'Ordering',
-                'required' => true,
-                'choices' => GenericGroup::getAllOrderChoices(),
-            )
-        );
-
-    }
-
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-    }
-
-    public function getName()
-    {
-        return 'report_group_generic';
-    }
-}
- 
- ```
+```
  
  
- ### A not so simple grouping
+### A not so simple grouping
  
  Although most groups are going to be on or off, the date grouping can be used to group by dates, days, months, weeks, etc. This requires a little extra configuration as the $this->group property will need to store more than just a boolean off/on.
 
@@ -622,9 +487,9 @@ and create the form type to be used:
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Viva\BravoBundle\Report\Group\DateGroup;
-use Vivait\ReportingBundle\Form\Type\ReportFilterTypeInterface;
+use Vivait\ReportingBundle\Form\Type\ReportFilterType;
 
-class DateGroupType extends ReportFilterTypeInterface
+class DateGroupType extends ReportFilterType
 {
 
     public function buildForm(FormBuilderInterface $form, array $options)
@@ -658,6 +523,19 @@ class DateGroupType extends ReportFilterTypeInterface
     {
         return 'report_group_daterange';
     }
+```
+
+Don't forget to add the group into the report:
+
+```php
+
+  use Vivait\MyAppBundle\Report\Group\DateGroup;
+
+  function __construct(...)
+  ...
+    $this->addChart('group_date', new DateGroup($this,'u.date'));
+  ...
+
 ```
 
 ## Graphs
