@@ -511,12 +511,15 @@ The first parameter is simply an alias for the graph and should be unique in the
 
 Currently there are a number available including
 
- * BarChart(ReportBuilder $report, $field)
- * LineChart(ReportBuilder $report, $field)
- * RadarChart(ReportBuilder $report, $field)
-  
-$report is a reference to your report class, in most cases you can pass in $this
-$field is the data value you wish to display in the graph, in the above example it would be 'total'
+ * BarChart
+ * LineChart
+ * RadarChart
+ * DonutChart (to be implemented)
+
+Each graph has two parameters to pass into the constructor
+
+ * ReportBuilder $report is a reference to your report class, in most cases you can pass in $this.
+ * $field is the data value you wish to display in the graph, in the above example it would be 'total'.
 
 The graphs will use your groupings and filters, if your groupings result in a multidimentionsal result set then the graphs will adjust to suit. It should be noted that some graph types only support a limited number of dimensions:
 
