@@ -18,6 +18,13 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('vivait_reporting');
+        $rootNode
+            ->children()
+                ->scalarNode('user_class')
+                ->isRequired()
+                ->end()
+            ->end();
         return $treeBuilder;
     }
 }

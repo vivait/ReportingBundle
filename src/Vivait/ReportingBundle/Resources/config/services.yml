@@ -1,3 +1,6 @@
+parameters:
+    vivait_reporting.reporting_user_interface.class: Vivait\ReportingBundle\Model\ReportingUserInterface
+
 services:
     vivait_reporting:
         class: Vivait\ReportingBundle\Services\ReportingService

@@ -35,6 +35,22 @@ Create a link to the Reporting Centre:
 <a href="{{ path('vivait_reporting') }}">Reporting Centre</a>
 ```
 
+Ensure your user entity implements `Vivait\ReportingBundle\Model\ReportingUserInterface`:
+
+```php
+class User extends BaseUser implements ReportingUserInterface
+{
+  ...
+}
+```
+
+And let this bundle know what your User entity is:
+
+```yaml
+vivait_reporting:
+    user_class: Vivait\MyAppBundle\Entity\User
+```
+
 ## Usage
 
 The reporting framework allows you to create classes that interact with each other so that useful and meaningful reports can be build without the complexities of dealing with the SQL queries directly.
@@ -59,7 +75,7 @@ class MyReport extends ReportBuilder
         $this->em = $entityManager;
         $this->securityContext = $securityContext;
     }
-    
+
     public function getTitle()
     {
         return 'Lead Counts';

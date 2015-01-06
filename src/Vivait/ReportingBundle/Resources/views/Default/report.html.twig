@@ -4,7 +4,7 @@
     {{ parent() }}
 
     {% javascripts
-    "bundles/andreyboloninchartjs/Chart.min.js" %}
+    "%kernel.root_dir%/../vendor/nnnick/chartjs/Chart.min.js" %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock head_script %}
