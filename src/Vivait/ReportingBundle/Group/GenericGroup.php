@@ -1,10 +1,9 @@
 <?php
 
-namespace Vivait\ReportingBundle\Report\Group;
+namespace Vivait\ReportingBundle\Group;
 
 use Symfony\Component\Form\AbstractType;
 use Vivait\ReportingBundle\Form\Type\GenericGroupType;
-use Vivait\ReportingBundle\Group\ReportGroup;
 use Vivait\ReportingBundle\Interfaces\ReportGroupOrderableInterface;
 
 class GenericGroup extends ReportGroup implements ReportGroupOrderableInterface
