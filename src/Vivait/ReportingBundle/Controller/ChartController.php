@@ -2,7 +2,7 @@
 
 namespace Vivait\ReportingBundle\Controller;
 
-use Vivait\BootstrapBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Vivait\ReportingBundle\Entity\Report;
 
 class ChartController extends Controller
