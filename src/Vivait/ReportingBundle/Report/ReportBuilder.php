@@ -125,6 +125,16 @@ abstract class ReportBuilder
         return $this->charts;
     }
 
+    public function hasChart($alias)
+    {
+        return array_key_exists($alias, $this->getCharts());
+    }
+
+    public function getChart($alias)
+    {
+        return $this->getCharts()[$alias];
+    }
+
 
     /**
      * @param ReportGroup []
