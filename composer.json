@@ -22,6 +22,10 @@
   "require-dev": {
     "phpspec/phpspec": "~2.0"
   },
+  "suggest": {
+    "symfony/twig-bridge": "Allows the use of render() twig function for embedding charts",
+    "symfony/http-kernel": "Needed to perform sub requests in order to embed charts"
+  },
   "config": {
     "bin-dir": "bin"
   },
