@@ -81,16 +81,10 @@ class ReportingController extends Controller
      */
     public function buildAction(Report $report)
     {
+        $reporting = $this->get('vivait_reporting');
+        $report_obj = $reporting->getReport($report->getReportService(), $report);
 
-        $report_obj = $this->get('vivait_reporting')->getReport($report->getReportService(), $report);
-        $data['values'] = $report_obj->getQuery();
-        $data['mappings'] = $report_obj->getColumnMapping();
-        $data['comparison_status'] = false;
-
-        foreach ($report->getComparisons() as $comparison) {
-            $comparison_obj = $this->get('vivait_reporting')->getReport($comparison->getReportService(), $comparison);
-            $data = $this->get('vivait_reporting')->compareData($data['values'], $data['mappings'], $comparison_obj->getQuery(), $comparison_obj->getColumnMapping());
-        }
+        $data = $reporting->getComparisonData($report, $report_obj->getQuery(), $report_obj->getColumnMapping());
 
         return $this->render(
             'VivaitReportingBundle:Default:report.html.twig',

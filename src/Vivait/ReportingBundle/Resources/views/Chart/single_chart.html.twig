@@ -5,4 +5,4 @@
     {% endjavascripts %}
 {% endif %}
 
-{% include chart.template with {'alias': 'test', 'mapping': chart.getColumnMapping ,'graph_data': chart.getGraphData(report.getQuery, report.getColumnMapping), 'options': chart.getOptions(chart.getColumnMapping)} only %}
+{% include chart.template with {'alias': alias, 'mapping': columnmapping ,'graph_data': chart.getGraphData(data, columnmapping), 'options': chart.getOptions(columnmapping)} only %}
