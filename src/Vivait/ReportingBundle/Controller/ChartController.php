@@ -3,12 +3,17 @@
 namespace Vivait\ReportingBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Vivait\ReportingBundle\Entity\Report;
 
 class ChartController extends Controller
 {
-    public function getChartAction(Report $report, $chart_alias, $js = true)
+    public function getChartAction(Request $request, Report $report, $chart_alias)
     {
+        $js = $request->get('js', true);
+        $width = $request->get('width', 1000);
+        $height = $request->get('height', 500);
+
         $reporting = $this->get('vivait_reporting');
         try {
             $report_obj = $reporting->getReport($report->getReportService(), $report);
@@ -29,6 +34,8 @@ class ChartController extends Controller
             'columnmapping'     => $data['mappings'],
             'comparison_status' => $data['comparison_status'],
             'js' => $js,
+            'width' => $width,
+            'height' => $height,
         ]);
     }
 }

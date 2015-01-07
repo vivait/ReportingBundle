@@ -62,15 +62,31 @@ If you try to display a graph with an incompatible number of dimensions the defa
 ## Embedding
 For those who just like to look at charts, it's possible to embed a single chart, into a twig template for example, using the Symfony sub-request framework, or simply via a url.
 
-To embed or view a single graph, you will need two parameters, the report entity and a chart alias. Optionally, you can disable loading Chart.js, if for example, you have already loaded the file in your template. This stops the file being loaded multiple times. By default, Chart.js will be loaded.
+To embed or view a single graph, two parameters are required, the `report` and a `chart_alias`.
 
-### Route
+```php
+{{ path('vivait_reporting_chart', { 'report' : id, 'chart_alias' : 'chart_day'} ) }}
+```
 
-You can view a single graph via a URL. In Symfony this can be generated using the root `vivait_reporting_chart`, using the parameters described above.
+```php
+{{ render(controller('VivaitReportingBundle:Chart:getChart', {'report' : id, 'chart_alias': 'chart_day' })) }}
+```
 
-### Subrequest
+Additionally, the size of the chart can be customised by setting the `width` and `height` parameters. By default the width and height are set to `1000` and `500` respectively.
 
-Using the twig `render` function it's possible to embed a chart directly into a template. In this particular example, `js` is set as `false`, since the page it is embedded in already loads Chart.js
+```php
+{{ path('vivait_reporting_chart', { 'report' : id, 'chart_alias' : 'chart_day', 'width' : 200, 'height': 200 } ) }}
+```
+
+```php
+{{ render(controller('VivaitReportingBundle:Chart:getChart', {'report' : id, 'chart_alias': 'chart_day', 'width' : 200, 'height': 200  })) }}
+```
+
+Optionally, you can disable loading Chart.js, if for example, you have already loaded the file in your template. This stops the file being loaded multiple times.
+
+```php
+{{ path('vivait_reporting_chart', { 'report' : id, 'chart_alias' : 'chart_day', 'js' : false } ) }}
+```
 
 ```php
 {{ render(controller('VivaitReportingBundle:Chart:getChart', {'report' : id, 'chart_alias': 'chart_day', 'js' : false })) }}
