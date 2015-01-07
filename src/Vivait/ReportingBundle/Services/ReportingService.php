@@ -3,6 +3,7 @@
 namespace Vivait\ReportingBundle\Services;
 
 
+use Vivait\ReportingBundle\Entity\Report;
 use Vivait\ReportingBundle\Report\ReportBuilder;
 
 class ReportingService
@@ -28,6 +29,64 @@ class ReportingService
     public function getReports()
     {
         return $this->reports;
+    }
+
+    /**
+     * Private function used to get a report from the service and load in entity properties if necessary
+     * Also inject any dependancies into the filters/groups
+     * @param $report_service_name
+     * @param Report $report
+     * @return ReportBuilder
+     * @throws \Exception
+     */
+    public function getReport($report_service_name, Report $report = null)
+    {
+        if (!array_key_exists($report_service_name, $this->reports) || !$report_obj = clone $this->reports[$report_service_name]) {
+            throw new \Exception("The report does not exist");
+        }
+
+        if ($report) {
+            /**
+             * Pull the filters from the DB and apply them to the reportbuilder
+             *
+             * at this stage we have a list of filter/group objects in the reportbuilder and we
+             * need to overwrite certain properties of those objects with ones that are attached
+             * to the report entity in the database.
+             *
+             * We can't just overwrite the entire list of objects because we would lose critical
+             * information as only a subset of this is stored when the object is serialised.
+             */
+            #replace this with a registry of 'requires'
+            foreach ($report_obj->getFilters() as $key => &$row) {
+                $row->injectReport(clone $report_obj);
+
+                if ($report->getFilter($key)) {
+                    $row->unserialize($report->getFilter($key)->serialize());
+                }
+
+                if ($report->getParent() && $row->getLinked()) {
+                    $row->unserialize($report->getParent()->getFilter($key)->serialize());
+                    $row->setLinked(true);
+                }
+            }
+
+            foreach ($report_obj->getGroups() as $key => &$row) {
+                $row->injectReport($report_obj);
+                if ($report->getGroup($key)) {
+                    $row->unserialize($report->getGroup($key)->serialize());
+                }
+            }
+
+            foreach ($report_obj->getOrders() as $key => &$row) {
+                $row->injectReport($report_obj);
+                if ($report->getOrder($key)) {
+                    $row->unserialize($report->getOrder($key)->serialize());
+                }
+            }
+
+        }
+
+        return $report_obj;
     }
 
     /**

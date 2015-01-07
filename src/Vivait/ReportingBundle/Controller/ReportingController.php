@@ -9,64 +9,7 @@ use Vivait\ReportingBundle\Report\ReportBuilder;
 
 class ReportingController extends Controller
 {
-    /**
-     * Private function used to get a report from the service and load in entity properties if necessary
-     * Also inject any dependancies into the filters/groups
-     * @param $report_service_name
-     * @param Report $report
-     * @return ReportBuilder
-     */
-    private function getReport($report_service_name, Report $report = null)
-    {
-        $report_obj = clone $this->get($report_service_name);
 
-        if (!$report_obj) {
-            throw $this->createNotFoundException('The report does not exist');
-        }
-
-        if ($report) {
-            /**
-             * Pull the filters from the DB and apply them to the reportbuilder
-             *
-             * at this stage we have a list of filter/group objects in the reportbuilder and we
-             * need to overwrite certain properties of those objects with ones that are attached
-             * to the report entity in the database.
-             *
-             * We can't just overwrite the entire list of objects because we would lose critical
-             * information as only a subset of this is stored when the object is serialised.
-             */
-            #replace this with a registry of 'requires'
-            foreach ($report_obj->getFilters() as $key => &$row) {
-                $row->injectReport(clone $report_obj);
-
-                if ($report->getFilter($key)) {
-                    $row->unserialize($report->getFilter($key)->serialize());
-                }
-
-                if ($report->getParent() && $row->getLinked()) {
-                    $row->unserialize($report->getParent()->getFilter($key)->serialize());
-                    $row->setLinked(true);
-                }
-            }
-
-            foreach ($report_obj->getGroups() as $key => &$row) {
-                $row->injectReport($report_obj);
-                if ($report->getGroup($key)) {
-                    $row->unserialize($report->getGroup($key)->serialize());
-                }
-            }
-
-            foreach ($report_obj->getOrders() as $key => &$row) {
-                $row->injectReport($report_obj);
-                if ($report->getOrder($key)) {
-                    $row->unserialize($report->getOrder($key)->serialize());
-                }
-            }
-
-        }
-
-        return $report_obj;
-    }
 
     /**
      * Report Index
@@ -89,7 +32,7 @@ class ReportingController extends Controller
      */
     public function createAction($report, Report $parent = null)
     {
-        $report_obj = $this->getReport($report);
+        $report_obj = $this->get('vivait_reporting')->getReport($report);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -113,7 +56,7 @@ class ReportingController extends Controller
      */
     public function createcomparisonAction(Report $report)
     {
-        $report_obj = $this->getReport($report->getReportService());
+        $report_obj = $this->get('vivait_reporting')->getReport($report->getReportService());
 
         $em = $this->getDoctrine()->getManager();
 
@@ -139,13 +82,13 @@ class ReportingController extends Controller
     public function buildAction(Report $report)
     {
 
-        $report_obj = $this->getReport($report->getReportService(), $report);
+        $report_obj = $this->get('vivait_reporting')->getReport($report->getReportService(), $report);
         $data['values'] = $report_obj->getQuery();
         $data['mappings'] = $report_obj->getColumnMapping();
         $data['comparison_status'] = false;
 
         foreach ($report->getComparisons() as $comparison) {
-            $comparison_obj = $this->getReport($comparison->getReportService(), $comparison);
+            $comparison_obj = $this->get('vivait_reporting')->getReport($comparison->getReportService(), $comparison);
             $data = $this->get('vivait_reporting')->compareData($data['values'], $data['mappings'], $comparison_obj->getQuery(), $comparison_obj->getColumnMapping());
         }
 
@@ -174,7 +117,7 @@ class ReportingController extends Controller
     public function filterAction(Report $report, $filter, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $report_obj = $this->getReport($report->getReportService(), $report);
+        $report_obj = $this->get('vivait_reporting')->getReport($report->getReportService(), $report);
 
         #pull the filter from the report service as that is where the depinj version will live
         $filter_obj = $report_obj->getFilter($filter);
@@ -216,7 +159,7 @@ class ReportingController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $report_obj = $this->getReport($report->getReportService(), $report);
+        $report_obj = $this->get('vivait_reporting')->getReport($report->getReportService(), $report);
 
         #pull the group from the report service as that is where the depinj version will live
         $group_obj = $report_obj->getGroup($group);
@@ -258,7 +201,7 @@ class ReportingController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $report_obj = $this->getReport($report->getReportService(), $report);
+        $report_obj = $this->get('vivait_reporting')->getReport($report->getReportService(), $report);
 
         #pull the order from the report service as that is where the depinj version will live
         $order_obj = $report_obj->getOrder($order);
