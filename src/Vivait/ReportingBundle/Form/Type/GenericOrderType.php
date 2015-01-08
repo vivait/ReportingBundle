@@ -17,7 +17,7 @@ class GenericOrderType extends ReportFilterType
     /**
      * @param $choices
      */
-    function __construct($choices) {
+    public function __construct($choices) {
         $this->choices = $choices;
     }
 

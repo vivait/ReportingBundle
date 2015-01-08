@@ -89,7 +89,7 @@ class Report
      */
     private $shared_users;
 
-    function __construct()
+    public function __construct()
     {
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
@@ -375,7 +375,7 @@ class Report
     /**
      * Get comparisons
      *
-     * @return Report
+     * @return Report[]
      */
     public function getComparisons()
     {

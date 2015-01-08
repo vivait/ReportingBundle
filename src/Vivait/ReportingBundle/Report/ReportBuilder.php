@@ -47,12 +47,12 @@ abstract class ReportBuilder
     /**
      * @return QueryBuilder
      */
-    abstract function getQueryBuilder();
+    abstract protected function getQueryBuilder();
 
     /**
      * @return array
      */
-    abstract function getBaseColumnMapping();
+    abstract protected function getBaseColumnMapping();
 
     /**
      * Returns the entire set of column mappings used by this report
@@ -123,6 +123,16 @@ abstract class ReportBuilder
     public function getCharts()
     {
         return $this->charts;
+    }
+
+    public function hasChart($alias)
+    {
+        return array_key_exists($alias, $this->getCharts());
+    }
+
+    public function getChart($alias)
+    {
+        return $this->getCharts()[$alias];
     }
 
 

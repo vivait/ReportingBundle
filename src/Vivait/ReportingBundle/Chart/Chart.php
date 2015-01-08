@@ -17,7 +17,7 @@ abstract class Chart
      * @param ReportBuilder $report
      * @param $field int        The field is the numerical value to use for the graphs
      */
-    function __construct(ReportBuilder $report, $field)
+    public function __construct(ReportBuilder $report, $field)
     {
         #we need a link to the report so we can pull mappings from it at a late stage
         $this->report = $report;
@@ -28,14 +28,14 @@ abstract class Chart
      * Return the twig template to use
      * @return string
      */
-    abstract function getTemplate();
+    abstract public function getTemplate();
 
     /**
      * Return the options to be used in the graph
      * @param array $columnmapping
      * @return array
      */
-    abstract function getOptions(array $columnmapping);
+    abstract public function getOptions(array $columnmapping);
 
     /**
      * Get the column mappings of the report
