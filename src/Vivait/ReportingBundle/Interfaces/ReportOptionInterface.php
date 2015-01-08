@@ -14,11 +14,6 @@ interface ReportOptionInterface
     /**
      * @return string
      */
-    public function getName();
-
-    /**
-     * @return string
-     */
     public function getOptions();
 
     /**

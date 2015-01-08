@@ -22,6 +22,10 @@ Once you have this then in the constructor of your report class simply add the f
 
 The first parameter is simply an alias for the graph and should be unique in the report, the second parameter accepts the graph class you wish to use.
 
+All graph classes need the reportbuilder injected to pull out essential data such as column mapping information.
+
+It is important that the charts are added as the final element to the constructor to ensure that the column mapping information is complete.
+
 Currently there are a number available including
 
  * BarChart

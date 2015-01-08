@@ -2,7 +2,6 @@
 
 namespace Vivait\ReportingBundle\Order;
 
-
 use Serializable;
 use Vivait\ReportingBundle\Interfaces\ReportOptionInterface;
 use Vivait\ReportingBundle\Report\ReportBuilder;
@@ -16,16 +15,34 @@ abstract class ReportOrder implements Serializable, ReportOptionInterface
 
     protected $field;
     protected $order;
+    protected $label;
     private $report;
 
     protected $serialize_fields = ['order'];
 
+    /**
+     * @param $field string     This is the DQL field to order by
+     * @param string $label     This is the label to be displayed on the order selection dialog
+     */
+    function __construct($field, $label)
+    {
+        $this->field = $field;
+        $this->label = $label;
+        $this->order = self::ORDER_BY_NONE;
+    }
 
     /**
      * Return a DQL string of the ordering required
      * @return string|null
      */
-    abstract public function getOrderBy();
+    public function getOrderBy()
+    {
+        if ($this->order) {
+            return $this->field;
+        }
+
+        return '';
+    }
 
     /**
      * Return a DQL string of the ordering required
@@ -100,8 +117,37 @@ abstract class ReportOrder implements Serializable, ReportOptionInterface
      */
     function __toString()
     {
-        return $this->getName();
+        return $this->getLabel();
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @return string
+     * @deprecated
+     */
+    public function getName() {
+        return $this->label;
     }
 
 
+    /**
+     * @return string
+     */
+    public function getOptions()
+    {
+        foreach ($this->getAllChoices() as $key => $choice) {
+            if ($this->order == $key) {
+                return $choice;
+            }
+        }
+
+        return 'Unknown';
+    }
 }

@@ -19,7 +19,7 @@ Most groupings are a simple off/on with an ordering, in most cases you can use t
 
   function __construct(...)
   ...
-    $this->addChart('group_called', new GenericGroup($this,'u.called'));
+    $this->addGroup('group_called', new GenericGroup('u.called', 'Called'));
   ...
 
 ```
@@ -46,13 +46,6 @@ class DateGroup extends ReportGroup implements ReportGroupOrderableInterface
     CONST GROUP_BY_HOUR = 4;
     CONST GROUP_BY_YEAR = 5;
     CONST GROUP_BY_DAY_OF_WEEK = 6;
-
-    function __construct($field, $label)
-    {
-        $this->label = $label;
-        $this->field = $field;
-        $this->group = self::GROUP_BY_OFF;
-    }
 
     /**
      * @return Criteria
@@ -175,7 +168,6 @@ and create the form type to be used:
 
 ```php
 
-
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Viva\BravoBundle\Report\Group\DateGroup;
@@ -225,7 +217,7 @@ Don't forget to add the group into the report:
 
   function __construct(...)
   ...
-    $this->addChart('group_date', new DateGroup($this,'u.date'));
+    $this->addGroup('group_called', new DateGroup('u.date', 'Date Range'));
   ...
 
 ```
