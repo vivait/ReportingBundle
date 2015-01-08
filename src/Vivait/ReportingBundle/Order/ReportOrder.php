@@ -24,7 +24,7 @@ abstract class ReportOrder implements Serializable, ReportOptionInterface
      * @param $field string     This is the DQL field to order by
      * @param string $label     This is the label to be displayed on the order selection dialog
      */
-    function __construct($field, $label)
+    public function __construct($field, $label)
     {
         $this->field = $field;
         $this->label = $label;
@@ -115,7 +115,7 @@ abstract class ReportOrder implements Serializable, ReportOptionInterface
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->getLabel();
     }

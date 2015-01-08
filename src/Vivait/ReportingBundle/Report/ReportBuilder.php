@@ -47,12 +47,12 @@ abstract class ReportBuilder
     /**
      * @return QueryBuilder
      */
-    abstract function getQueryBuilder();
+    abstract protected function getQueryBuilder();
 
     /**
      * @return array
      */
-    abstract function getBaseColumnMapping();
+    abstract protected function getBaseColumnMapping();
 
     /**
      * Returns the entire set of column mappings used by this report

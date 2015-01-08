@@ -181,7 +181,7 @@ abstract class ReportGroup implements Serializable, ReportOptionInterface
     /**
      * @return string
      */
-    function __toString()
+    public function __toString()
     {
         return $this->getLabel();
     }

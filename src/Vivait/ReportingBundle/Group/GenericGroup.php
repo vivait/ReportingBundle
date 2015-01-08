@@ -16,7 +16,7 @@ class GenericGroup extends ReportGroup implements ReportGroupOrderableInterface
      * @param $field string     This is the DQL field to group by
      * @param $label string     This is the label to show in output
      */
-    function __construct($field, $label)
+    public function __construct($field, $label)
     {
         $this->label = $label;
         $this->field = $field;
