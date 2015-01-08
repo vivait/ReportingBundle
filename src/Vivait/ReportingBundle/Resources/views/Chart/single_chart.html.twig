@@ -1,0 +1,8 @@
+{% if js %}
+    {% javascripts
+    "%kernel.root_dir%/../vendor/nnnick/chartjs/Chart.min.js" %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endif %}
+
+{% include chart.template with {'width': width, 'height': height, 'alias': 'test', 'mapping': columnmapping ,'graph_data': chart.getGraphData(data, columnmapping), 'options': chart.getOptions(columnmapping)} only %}

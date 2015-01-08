@@ -138,7 +138,38 @@ class ReportingService
             'mappings'          => $report_mapping,
             'comparison_status' => $status
         ];
+    }
 
+    /**
+     * Gets data from a reports comparisons. If there are no comparisons, the given data is returned in an associative
+     * array
+     *
+     * @param Report $report
+     * @param $values
+     * @param $mappings
+     * @return array
+     * @throws \Exception
+     */
+    public function getComparisonData(Report $report, $values, $mappings)
+    {
+        $data['values'] = $values;
+        $data['mappings'] = $mappings;
+        $data['comparison_status'] = false;
+
+        foreach ($report->getComparisons() as $comparison) {
+            $comparison_obj = $this->getReport(
+                $comparison->getReportService(),
+                $comparison
+            );
+            $data = $this->compareData(
+                $data['values'],
+                $data['mappings'],
+                $comparison_obj->getQuery(),
+                $comparison_obj->getColumnMapping()
+            );
+        }
+
+        return $data;
     }
 
     /**

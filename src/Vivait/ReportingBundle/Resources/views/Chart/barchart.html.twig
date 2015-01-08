@@ -22,8 +22,8 @@
                 ]
             };
 
-            {{ alias }}.canvas.width = 1000;
-            {{ alias }}.canvas.height = 500;
+            {{ alias }}.canvas.width = {{ width is defined ? width : 1000 }};
+            {{ alias }}.canvas.height = {{ height is defined ? height : 500 }};
 
             new Chart({{ alias }}).Bar({{ alias }}_data);
 

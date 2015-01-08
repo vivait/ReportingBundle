@@ -375,7 +375,7 @@ class Report
     /**
      * Get comparisons
      *
-     * @return Report
+     * @return Report[]
      */
     public function getComparisons()
     {
