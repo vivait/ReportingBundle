@@ -41,3 +41,7 @@ vivait_reporting_order:
 vivait_reporting_favorite:
     path:     /reporting/{report}/favorite/{remove}
     defaults: { _controller: VivaitReportingBundle:Reporting:favorite, remove: 0 }
+
+vivait_reporting_chart:
+    path:     /reporting/chart/{report}/{chart_alias}
+    defaults: { _controller: VivaitReportingBundle:Chart:getChart}
