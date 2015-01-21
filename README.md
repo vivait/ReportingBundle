@@ -13,6 +13,6 @@ Please note that this bundle is not an off the shelf reporting application and i
  * [Reports](docs/en/2_reports.md)
  * [Filters](docs/en/3_filters.md)
  * [Groups](docs/en/4_groups.md)
- * [Orders](docs/en/5_orders.md)
- * [Charts](docs/en/6_charts.md)
+ * [Orders](docs/en/6_orders.md)
+ * [Charts](docs/en/5_charts.md)
  * [Post Processing Data](docs/en/7_postprocessing.md)
