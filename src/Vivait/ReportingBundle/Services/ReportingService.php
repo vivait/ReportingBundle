@@ -57,7 +57,7 @@ class ReportingService
              * information as only a subset of this is stored when the object is serialised.
              */
             #replace this with a registry of 'requires'
-            foreach ($report_obj->getFilters() as $key => &$row) {
+            foreach ($report_obj->getFilters() as $key => $row) {
                 $row->injectReport(clone $report_obj);
 
                 if ($report->getFilter($key)) {
@@ -70,14 +70,14 @@ class ReportingService
                 }
             }
 
-            foreach ($report_obj->getGroups() as $key => &$row) {
+            foreach ($report_obj->getGroups() as $key => $row) {
                 $row->injectReport($report_obj);
                 if ($report->getGroup($key)) {
                     $row->unserialize($report->getGroup($key)->serialize());
                 }
             }
 
-            foreach ($report_obj->getOrders() as $key => &$row) {
+            foreach ($report_obj->getOrders() as $key => $row) {
                 $row->injectReport($report_obj);
                 if ($report->getOrder($key)) {
                     $row->unserialize($report->getOrder($key)->serialize());
